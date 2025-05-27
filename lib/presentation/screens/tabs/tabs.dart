@@ -37,12 +37,12 @@ class _MainTabsState extends State<MainTabs> {
           return MaterialPageRoute(
             builder: (context) {
               switch (index) {
+                case 1:
+                  return const FleetPadScreen();
                 case 0:
                   return const HomeScreen();
-                case 1:
-                  return const PeritajeScreen();
                 case 2:
-                  return const FleetPadScreen();
+                  return const PeritajeScreen();
                 default:
                   return const SizedBox.shrink();
               }
@@ -68,7 +68,7 @@ class _MainTabsState extends State<MainTabs> {
         duration: const Duration(milliseconds: 250),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.black : Colors.transparent,
+          color: isSelected ? Colors.blue : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Icon(
@@ -90,16 +90,21 @@ class _MainTabsState extends State<MainTabs> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white, 
+          elevation: 0, 
           title: Text(
             _currentIndex == 0
                 ? 'Inicio'
                 : _currentIndex == 1
-                ? 'Peritaje'
-                : 'FleetPad',
+                    ? 'Peritaje'
+                    : 'FleetPad',
+            style: const TextStyle(
+              color: Colors.black, 
+            ),
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.logout),
+              icon: const Icon(Icons.logout, color: Colors.black), 
               onPressed: () => _logout(context),
               tooltip: 'Cerrar sesión',
             ),
@@ -112,31 +117,26 @@ class _MainTabsState extends State<MainTabs> {
             _buildOffstageNavigator(2),
           ],
         ),
-        bottomNavigationBar: Container(
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.9),
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildTabItem(icon: Icons.home_outlined, index: 0),
-              _buildTabItem(
-                icon: Icons.assignment_turned_in_outlined,
-                index: 1,
-              ),
-              _buildTabItem(icon: Icons.local_shipping_outlined, index: 2),
-            ],
-          ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white, 
+          selectedItemColor: Colors.blue, 
+          unselectedItemColor: Colors.black54, 
+          currentIndex: _currentIndex,
+          onTap: _selectTab,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              label: 'Historial',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: 'Inicio',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outlined),
+              label: 'Perfil',
+            ),
+          ],
         ),
       ),
     );
