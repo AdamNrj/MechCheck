@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:prototipo_app/presentation/screens/login_screen.dart';
-import 'package:prototipo_app/presentation/screens/tabs/fleetpad_screen.dart';
+
 import 'package:prototipo_app/presentation/screens/tabs/home_screen.dart';
-import 'package:prototipo_app/presentation/screens/tabs/peritaje_screen.dart';
+import 'package:prototipo_app/presentation/screens/tabs/profile_screen.dart';
+import 'package:prototipo_app/presentation/screens/tabs/setting_screen.dart';
 
 class MainTabs extends StatefulWidget {
   const MainTabs({super.key});
@@ -12,7 +13,7 @@ class MainTabs extends StatefulWidget {
 }
 
 class _MainTabsState extends State<MainTabs> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
@@ -37,12 +38,12 @@ class _MainTabsState extends State<MainTabs> {
           return MaterialPageRoute(
             builder: (context) {
               switch (index) {
-                case 1:
-                  return const FleetPadScreen();
                 case 0:
+                  return const SettingScreen();
+                case 1: 
                   return const HomeScreen();
                 case 2:
-                  return const PeritajeScreen();
+                  return const ProfileScreen();
                 default:
                   return const SizedBox.shrink();
               }
@@ -94,10 +95,10 @@ class _MainTabsState extends State<MainTabs> {
           elevation: 0, 
           title: Text(
             _currentIndex == 0
-                ? 'Inicio'
+                ? 'Historial'
                 : _currentIndex == 1
                     ? 'Peritaje'
-                    : 'FleetPad',
+                    : 'Perfil',
             style: const TextStyle(
               color: Colors.black, 
             ),

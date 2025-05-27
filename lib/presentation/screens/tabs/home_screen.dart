@@ -42,6 +42,8 @@ class HomeScreen extends StatelessWidget {
                 iaEnabled: true,
                 statusColor: Colors.red,
               ),
+              const SizedBox(height: 24),
+              const Interactive3DViewCard(),
             ],
           ),
         ),
@@ -50,25 +52,75 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class SearchBarWidget extends StatelessWidget {
-  const SearchBarWidget();
+
+
+class SearchBarWidget extends StatefulWidget {
+  const SearchBarWidget({super.key});
+
+  @override
+  State<SearchBarWidget> createState() => _SearchBarWidgetState();
+}
+
+class _SearchBarWidgetState extends State<SearchBarWidget> {
+  final TextEditingController _controller = TextEditingController();
+  bool _hasText = false;
+  final Duration _animationDuration = const Duration(milliseconds: 200);
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      setState(() => _hasText = _controller.text.isNotEmpty);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.search),
-        hintText: 'Buscar peritajes...',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: Colors.grey[100],
+    return AnimatedContainer(
+      duration: _animationDuration,
+      curve: Curves.easeInOut,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.search, color: Colors.grey),
+          const SizedBox(width: 8),
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                hintText: 'Buscar peritajes...',
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          AnimatedSwitcher(
+            duration: _animationDuration,
+            transitionBuilder: (child, animation) => ScaleTransition(
+              scale: animation,
+              child: FadeTransition(opacity: animation, child: child),
+            ),
+            child: _hasText
+                ? IconButton(
+                    key: const ValueKey('clear'),
+                    icon: const Icon(Icons.close, color: Colors.grey),
+                    onPressed: () {
+                      _controller.clear();
+                      FocusScope.of(context).unfocus();
+                    },
+                  )
+                : const SizedBox.shrink(key: ValueKey('empty')),
+          ),
+        ],
       ),
     );
   }
 }
+
+
 
 class AnalysisIAWidget extends StatelessWidget {
   const AnalysisIAWidget();
@@ -153,6 +205,49 @@ class ActionButton extends StatelessWidget {
           Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 4),
           Text(description, style: const TextStyle(color: Colors.grey), textAlign: TextAlign.center),
+        ],
+      ),
+    );
+  }
+}
+
+class Interactive3DViewCard extends StatelessWidget {
+  const Interactive3DViewCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF8E2DE2), Color(0xFF4A00E0)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.purple.withOpacity(0.3),
+            blurRadius: 12,
+            offset: Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Icon(Icons.view_in_ar, color: Colors.white, size: 40),
+          SizedBox(height: 12),
+          Text(
+            'Vista 3D Interactiva',
+            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 6),
+          Text(
+            'Explora modelos 3D con interacción en tiempo real.',
+            style: TextStyle(color: Colors.white70),
+          ),
         ],
       ),
     );
