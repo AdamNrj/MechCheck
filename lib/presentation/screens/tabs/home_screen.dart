@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchBarWidget(),
-              const SizedBox(height: 16),
+              const SizedBox(height: 16),                                                            
               const AnalysisIAWidget(),
               const SizedBox(height: 24),
               const ActionButtonsWidget(),
@@ -320,3 +320,5 @@ class RecentReportTile extends StatelessWidget {
     );
   }
 }
+
+

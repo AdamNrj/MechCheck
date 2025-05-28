@@ -5,14 +5,14 @@ import 'package:prototipo_app/presentation/screens/tabs/home_screen.dart';
 import 'package:prototipo_app/presentation/screens/tabs/profile_screen.dart';
 import 'package:prototipo_app/presentation/screens/tabs/setting_screen.dart';
 
-class MainTabs extends StatefulWidget {
-  const MainTabs({super.key});
+class Tabs extends StatefulWidget {
+  const Tabs({super.key});
 
   @override
   _MainTabsState createState() => _MainTabsState();
 }
 
-class _MainTabsState extends State<MainTabs> {
+class _MainTabsState extends State<Tabs> {
   int _currentIndex = 1;
 
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
