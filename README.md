@@ -1,3 +1,3 @@
-# prototipo_app
+# MechCheck_app
 
 A new Flutter project.
