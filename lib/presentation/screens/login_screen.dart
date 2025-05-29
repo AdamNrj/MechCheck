@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:prototipo_app/presentation/screens/tabs/home_screen.dart';
+import 'package:prototipo_app/presentation/screens/invertor_list_screen.dart';
 import 'package:prototipo_app/presentation/screens/tabs/tabs.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -58,11 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
             ).showSnackBar(SnackBar(content: Text('¡Bienvenido $user!')));
 
             Navigator.pushReplacement(
-          context,
-            MaterialPageRoute(
-              builder: (_) => Tabs(
-              ),
-                ),  
+              context,
+              MaterialPageRoute(builder: (_) => Tabs()),
             );
           } else {
             _showError('Usuario inactivo. Contacta al administrador.');

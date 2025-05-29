@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:prototipo_app/core/models/driver.dart';
 
 class ServiceDrivers {
   final String username;
@@ -7,27 +8,28 @@ class ServiceDrivers {
 
   ServiceDrivers({required this.username, required this.password});
 
-  Future<List<Map<String, dynamic>>> getConductoresPorInversor(String inversorId) async {
+  Future<List<Conductor>> getConductoresActivos() async {
     final String basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
-    final Uri url = Uri.parse(
-      'https://desarrollo.fleetpad.app/fmi/odata/v4/FleetPad_des/conductor'
-      '?\$filter=Idinversor eq $inversorId and isActivo eq true'
-      '&\$select=nombreCompleto,apellido1,apellido2,isActivo,id',
+    final Uri url = Uri.https(
+      'desarrollo.fleetpad.app',
+      '/fmi/odata/v4/FleetPad_des/conductor',
+      {
+        r'$filter': 'isActivo eq true',
+        r'$select': 'nombreCompleto,apellido1,nombreInversor',
+      },
     );
 
     final response = await http.get(
       url,
-      headers: {
-        'Authorization': basicAuth,
-        'Accept': 'application/json',
-      },
+      headers: {'Authorization': basicAuth, 'Accept': 'application/json'},
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return List<Map<String, dynamic>>.from(data['value']);
+      final List<dynamic> values = data['value'];
+      return values.map((json) => Conductor.fromJson(json)).toList();
     } else {
       throw Exception('Error ${response.statusCode}: ${response.body}');
     }

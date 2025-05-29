@@ -1,67 +1,52 @@
-// import 'package:flutter/material.dart';
-// import 'package:prototipo_app/data/services/service_vehicle.dart';
+import 'package:flutter/material.dart';
+import 'package:prototipo_app/data/services/service_vehicle.dart';
 
-// class VehiculoListScreen extends StatefulWidget {
-//   final String username;
-//   final String password;
+class VehiculosScreen extends StatelessWidget {
+  final String username;
+  final String password;
+  final String conductorId;
 
-//   const VehiculoListScreen({
-//     super.key,
-//     required this.username,
-//     required this.password,
-//   });
+  const VehiculosScreen({
+    super.key,
+    required this.username,
+    required this.password,
+    required this.conductorId,
+  });
 
-//   @override
-//   State<VehiculoListScreen> createState() => _VehiculoListScreenState();
-// }
+  @override
+  Widget build(BuildContext context) {
+    final service = ServiceVehicles(username: username, password: password);
 
-// class _VehiculoListScreenState extends State<VehiculoListScreen> {
-//   List<Map<String, dynamic>> _vehiculos = [];
-//   bool _loading = true;
+    return Scaffold(
+      appBar: AppBar(title: const Text('Vehículos del Conductor')),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: service.getVehiculosPorConductor(conductorId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text('No hay vehículos para este conductor.'),
+            );
+          }
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _cargarVehiculos();
-//   }
-
-//   Future<void> _cargarVehiculos() async {
-//     try {
-//       final data = await VehicleService(
-       
-//       );
-//       setState(() {
-//       });
-//     } catch (e) {
-//       setState(() => _loading = false);
-//       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Lista de Vehículos')),
-//       body: _loading
-//           ? const Center(child: CircularProgressIndicator())
-//           : ListView.builder(
-//               itemCount: _vehiculos.length,
-//               itemBuilder: (context, index) {
-//                 final v = _vehiculos[index];
-//                 return Card(
-//                   margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-//                   child: ListTile(
-//                     leading: const Icon(Icons.directions_car),
-//                     title: Text(v['matricula'] ?? 'Sin matrícula'),
-//                     subtitle: Text(
-//                       'Marca: ${v['marca'] ?? 'N/A'}\n'
-//                       'Modelo: ${v['modelo'] ?? 'N/A'}\n'
-//                       'Estado: ${v['estado'] ?? 'N/A'}',
-//                     ),
-//                   ),
-//                 );
-//               },
-//             ),
-//     );
-//   }
-// }
+          final vehiculos = snapshot.data!;
+          return ListView.builder(
+            itemCount: vehiculos.length,
+            itemBuilder: (context, index) {
+              final vehiculo = vehiculos[index];
+              return ListTile(
+                title: Text(vehiculo['matricula'] ?? 'Sin matrícula'),
+                subtitle: Text(
+                  '${vehiculo['marca'] ?? ''} ${vehiculo['modelo'] ?? ''}',
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}

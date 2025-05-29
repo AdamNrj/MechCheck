@@ -12,17 +12,15 @@ class ServiceInvestors {
     final String basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
-    final Uri url = Uri.parse(
-      'https://desarrollo.fleetpad.app/fmi/odata/v4/FleetPad_des/inversor'
-      '?\$filter=IsActivo eq true&\$select=id,nombreInversor,IsActivo',
+    final Uri url = Uri.https(
+      'desarrollo.fleetpad.app',
+      '/fmi/odata/v4/FleetPad_des/inversor',
+      {r'$select': 'nombreInversor'},
     );
 
     final response = await http.get(
       url,
-      headers: {
-        'Authorization': basicAuth,
-        'Accept': 'application/json',
-      },
+      headers: {'Authorization': basicAuth, 'Accept': 'application/json'},
     );
 
     if (response.statusCode == 200) {

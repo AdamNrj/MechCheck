@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prototipo_app/presentation/screens/login_screen.dart';
-
 import 'package:prototipo_app/presentation/screens/tabs/home_screen.dart';
 import 'package:prototipo_app/presentation/screens/tabs/profile_screen.dart';
 import 'package:prototipo_app/presentation/screens/tabs/setting_screen.dart';
@@ -40,7 +39,7 @@ class _MainTabsState extends State<Tabs> {
               switch (index) {
                 case 0:
                   return const SettingScreen();
-                case 1: 
+                case 1:
                   return const HomeScreen();
                 case 2:
                   return const ProfileScreen();
@@ -91,21 +90,19 @@ class _MainTabsState extends State<Tabs> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white, 
-          elevation: 0, 
+          backgroundColor: Colors.white,
+          elevation: 0,
           title: Text(
             _currentIndex == 0
                 ? 'Historial'
                 : _currentIndex == 1
-                    ? 'Peritaje'
-                    : 'Perfil',
-            style: const TextStyle(
-              color: Colors.black, 
-            ),
+                ? 'Peritaje'
+                : 'Perfil',
+            style: const TextStyle(color: Colors.black),
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.logout, color: Colors.black), 
+              icon: const Icon(Icons.logout, color: Colors.black),
               onPressed: () => _logout(context),
               tooltip: 'Cerrar sesión',
             ),
@@ -119,9 +116,9 @@ class _MainTabsState extends State<Tabs> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white, 
-          selectedItemColor: Colors.blue, 
-          unselectedItemColor: Colors.black54, 
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.black54,
           currentIndex: _currentIndex,
           onTap: _selectTab,
           items: const [
